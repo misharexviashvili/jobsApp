@@ -15,10 +15,17 @@ import useFetch from "../../../hook/useFetch";
 const Popularjobs = () => {
   const router = useRouter();
   const { data, isLoading, error } = useFetch("search", {
-    query: "React Developer",
-    num_pages: 1,
+    query: "React developer",
+    num_pages: "1",
   });
-  console.log(data);
+
+  const [selectedJob, setSelectedJob] = useState();
+
+  const handleCardPress = (item) => {
+    router.push(`/job-details/${item.job_id}`);
+    setSelectedJob(item.job_id);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -27,6 +34,7 @@ const Popularjobs = () => {
           <Text style={styles.headerBtn}>Show all</Text>
         </TouchableOpacity>
       </View>
+
       <View style={styles.cardsContainer}>
         {isLoading ? (
           <ActivityIndicator size="large" color={COLORS.primary} />
@@ -34,12 +42,17 @@ const Popularjobs = () => {
           <Text>Something went wrong</Text>
         ) : (
           <FlatList
-            data={[1, 2, 3, 4]}
-            renderItem={({ item }) => <PopularJobCard item={item} />}
-            keyExtractor={(item) => item?.job_id}
+            data={data}
+            renderItem={({ item }) => (
+              <PopularJobCard
+                item={item}
+                selectedJob={selectedJob}
+                handleCardPress={handleCardPress}
+              />
+            )}
+            keyExtractor={(item) => item.job_id}
             contentContainerStyle={{ columnGap: SIZES.medium }}
             horizontal
-            showsHorizontalScrollIndicator={false}
           />
         )}
       </View>

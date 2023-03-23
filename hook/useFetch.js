@@ -32,16 +32,16 @@ const useFetch = (endpoint, query) => {
   };
 
   // TODO: uncomment fetching  and return refetch uncomment
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  // const refetch = () => {
-  //   setIsLoading(true);
-  //   fetchData();
-  // };
+  const refetch = () => {
+    setIsLoading(true);
+    fetchData();
+  };
 
-  return { data, isLoading, error /*refetch*/ };
+  return { data, isLoading, error ,refetch };
 };
 
 export default useFetch;
