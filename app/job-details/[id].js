@@ -29,7 +29,11 @@ function JobDetails() {
   });
   const [refreshing, setRefreshing] = useState(false);
   const [activeTab, setActiveTab] = useState(tabs[0]);
-  const onRefresh = () => {};
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    refetch();
+    setRefreshing(false);
+  }, []);
   const displayTabContent = () => {
     switch (activeTab) {
       case "Qualifications":
@@ -44,7 +48,12 @@ function JobDetails() {
           <JobAbout info={data[0].job_description ?? "No data provided"} />
         );
       case "Responsibilities":
-
+        return (
+          <Specifics
+            title="Responsibilities"
+            points={data[0].job_highlights?.Responsibilities ?? ["N/A"]}
+          />
+        );
       default:
         break;
     }
@@ -101,6 +110,12 @@ function JobDetails() {
             </View>
           )}
         </ScrollView>
+        <JobFooter
+          url={
+            data[0]?.job_google_link ??
+            "https://careers.google.com/jobs/results/"
+          }
+        />
       </Fragment>
     </SafeAreaView>
   );
